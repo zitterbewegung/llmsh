@@ -23,8 +23,7 @@ llm = ChatOpenAI(temperature=0)
 if len(sys.argv) > 1:
     if sys.argv[1] == '--l' or sys.argv[1] == '-l' or sys.argv[1] == '-local':
         from local import llm_local
-        breakpoint()
-        print('Using llama')
+        print('Using local llama')
         llm = llm_local
 
 
@@ -61,9 +60,6 @@ def main():
             print("llmsh: a simple natural language shell in python.")
         else:
             self_ask_with_search.run(command)
-            # output = chain.invoke({"input": })
-            # print(output)
-
 
 if __name__ == "__main__":
     main()
