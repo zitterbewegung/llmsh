@@ -12,23 +12,20 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-
-# from langchain.llms import HuggingFaceHub
-# from langchain.llms import HuggingFacePipeline
-# Make sure the model path is correct for your system!
-import os
+import os, sys
 
 load_dotenv()
 
 shell_tool = ShellTool()
+llm = ChatOpenAI(temperature=0)
 
-# llm = ChatOpenAI(temperature=0)
-# model = 'meta-llama/Llama-2-7b-hf'
-# llm = HuggingFacePipeline.from_model_id(
-#    model_id=model,
-#    task="text-generation",
-#    model_kwargs={"temperature": 0},
-# )
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == '--l' or sys.argv[1] == '-l' or sys.argv[1] == '-local':
+        from local import llm_local
+        breakpoint()
+        print('Using llama')
+        llm = llm_local
 
 
 shell_tool.description = shell_tool.description + f"args {shell_tool.args}".replace(
@@ -49,7 +46,7 @@ callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 self_ask_with_search = initialize_agent(
     [shell_tool],
     llm,
-    agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     verbose=True,
     handle_parsing_errors=True,
 )
@@ -57,7 +54,7 @@ self_ask_with_search = initialize_agent(
 
 def main():
     while True:
-        command = prompt("?")  # input("$ ")
+        command = input("$ ") #prompt("$)
         if command == "exit":
             break
         elif command == "help":

@@ -5,7 +5,7 @@ import transformers
 import torch
 import warnings
 warnings.filterwarnings('ignore')
-model="meta-llama/Llama-2-7b-chat-hf"
+model="meta-llama/Llama-2-13b-chat-hf"
 tokenizer=AutoTokenizer.from_pretrained(model)
 pipeline=transformers.pipeline(
      "text-generation",
@@ -20,4 +20,4 @@ pipeline=transformers.pipeline(
      num_return_sequences=1,
      eos_token_id=tokenizer.eos_token_id
      )
-llm=HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature':0}) 
+llm_local=HuggingFacePipeline(pipeline=pipeline, model_kwargs={'temperature':0}) 
