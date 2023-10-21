@@ -5,14 +5,14 @@ import transformers
 import torch
 import warnings
 warnings.filterwarnings('ignore')
-model="meta-llama/Llama-2-13b-chat-hf"
+model="codellama/CodeLlama-34b-Instruct-hf"
 tokenizer=AutoTokenizer.from_pretrained(model)
 pipeline=transformers.pipeline(
      "text-generation",
      model=model,
      tokenizer=tokenizer,
      torch_dtype=torch.bfloat16,
-        trust_remote_code=True,
+     trust_remote_code=True,
      device_map="auto",
      max_length=1000,
      do_sample=True,
