@@ -17,13 +17,20 @@ import os, sys
 load_dotenv()
 
 shell_tool = ShellTool()
-llm = ChatOpenAI(temperature=0)
+# template = """
+# You are an expert in using shell commands. The command will be directly executed in a shell. Only provide a single executable line of shell code as the answer to {question}.
+# """
 
+# prompt = PromptTemplate(template=template, input_variables=["question"])
+
+llm = ChatOpenAI(temperature=0)
+# llm_chain = LLMChain(prompt=prompt, llm=llm)
 
 if len(sys.argv) > 1:
-    if sys.argv[1] == '--l' or sys.argv[1] == '-l' or sys.argv[1] == '-local':
+    if sys.argv[1] == "--l" or sys.argv[1] == "-l" or sys.argv[1] == "-local":
         from local import llm_local
-        print('Using local llama')
+
+        print("Using local llama")
         llm = llm_local
 
 
@@ -31,35 +38,30 @@ shell_tool.description = shell_tool.description + f"args {shell_tool.args}".repl
     "{", "{{"
 ).replace("}", "}}")
 
-template = """
-You are an expert in using shell commands. Only provide a single executable line of shell code as the answer to {question} 
-Question: {question}
-The command will be directly executed in a shell. 
-Answer: Let's work this out in a step by step way to be sure we have the right answer."""
-
-prompt = PromptTemplate(template=template, input_variables=["question"])
 # Callbacks support token-wise streaming
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
 
-self_ask_with_search = initialize_agent(
+agent = initialize_agent(
     [shell_tool],
     llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True,
+    agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=False,
     handle_parsing_errors=True,
 )
 
 
 def main():
     while True:
-        command = input("$ ") #prompt("$)
+        command = input("$ ")  # prompt("$)
         if command == "exit":
             break
         elif command == "help":
             print("llmsh: a simple natural language shell in python.")
         else:
-            self_ask_with_search.run(command)
+            output = agent.run(command)
+            print(output)
+
 
 if __name__ == "__main__":
     main()
