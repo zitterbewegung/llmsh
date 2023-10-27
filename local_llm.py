@@ -7,13 +7,12 @@ model = AutoModelForCausalLM.from_pretrained("codellama/CodeLlama-13b-Instruct-h
 
 MODEL_NAME = "codellama/CodeLlama-13b-Instruct-hf"
  
-#tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
  
-#model = AutoModelForCausalLM.from_pretrained(
-#    MODEL_NAME,  trust_remote_code=True,
-#)
-tokenizer = tokenizer.to("cpu")
-model = model.to("cpu")
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+	trust_remote_code=True,
+)
  
 generation_config = GenerationConfig.from_pretrained(MODEL_NAME)
 generation_config.max_new_tokens = 1024
