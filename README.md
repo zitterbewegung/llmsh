@@ -11,4 +11,4 @@ Then to run this create a virtualenv and then install everything in requirements
 
 Then chmod +x llmsh.py and run  ./llmsh.py it should pop up.
 
-<img width="878" alt="Screenshot 2023-10-21 at 2 10 52 PM" src="https://github.com/zitterbewegung/llmsh/assets/30265/f295ed6b-7f39-4487-a5ac-213a11fce734">
+<img width="878" alt="277129261-f295ed6b-7f39-4487-a5ac-213a11fce734" src="https://github.com/zitterbewegung/llmsh/assets/30265/f7eb0b3a-2b8a-4bcf-b1a0-41e26281e101">
